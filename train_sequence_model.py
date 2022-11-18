@@ -116,7 +116,7 @@ def train_sequence_model(data,
             acc=history['val_acc'][-1], loss=history['val_loss'][-1]))
 
     # Save model.
-    model.save('rotten_tomatoes_sepcnn_model.h5')
+    model.save('helpdesk_sepcnn_model.h5')
     return history['val_acc'][-1], history['val_loss'][-1]
 
 

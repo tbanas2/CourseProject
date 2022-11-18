@@ -22,10 +22,20 @@ class StemmedCountVectorizer(CountVectorizer):
         stemmer = SnowballStemmer("english", ignore_stopwords=True)
         return lambda doc: ([stemmer.stem(w) for w in analyzer(doc)])
 
-def train_bayes(column_to_predict = "business_service",text_columns = "body", remove_stop_words = True, stop_words_lang = 'english', use_stemming = False, fit_prior = True, min_data_per_class = 1000 ):
+def get_bayes_result(column_to_predict = "business_service",text_columns = "body", remove_stop_words = True, stop_words_lang = 'english', use_stemming = False, fit_prior = True, min_data_per_class = 1000, file_path= './/all_tickets.csv' ):
+    """Returns results of a Native Bayes classification when given a CSV.
+
+    # Arguments
+        column_to_predict = Name of column for classifying
+        file_name = path to file
+        text_columns = Name of column containing model input
+
+    # Returns
+        test_labels, predicted; the actual values of the labels in the test data set and what the model predicted
+    """
 
     dfTickets = pd.read_csv(
-        './/all_tickets.csv',
+        file_path,
         dtype=str
     )  
       
@@ -58,10 +68,7 @@ def train_bayes(column_to_predict = "business_service",text_columns = "body", re
     return test_labels, predicted
 
 
-    
-    
-
 if __name__ == '__main__':
-    train_bayes()
+    get_bayes_result()
      
     
