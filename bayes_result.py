@@ -22,25 +22,13 @@ class StemmedCountVectorizer(CountVectorizer):
         stemmer = SnowballStemmer("english", ignore_stopwords=True)
         return lambda doc: ([stemmer.stem(w) for w in analyzer(doc)])
 
-
-column_to_predict = "business_service"
-classifier = "NB"  # Supported algorithms # "SVM" # "NB"
-use_grid_search = False  # grid search is used to find hyperparameters. Searching for hyperparameters is time consuming
-remove_stop_words = True  # removes stop words from processed text
-stop_words_lang = 'english'  # used with 'remove_stop_words' and defines language of stop words collection
-use_stemming = False  # word stemming using nltk
-fit_prior = True  # if use_stemming == True then it should be set to False ?? double check
-min_data_per_class = 1000 # used to determine number of samples required for each class.Classes with less than that will be excluded from the dataset. default value is 1
-
-def train_bayes():
+def train_bayes(column_to_predict = "business_service",text_columns = "body", remove_stop_words = True, stop_words_lang = 'english', use_stemming = False, fit_prior = True, min_data_per_class = 1000 ):
 
     dfTickets = pd.read_csv(
         './/all_tickets.csv',
         dtype=str
     )  
-
-    text_columns = "body"  
-    
+      
     bytag = dfTickets.groupby(column_to_predict).aggregate(np.count_nonzero)
     tags = bytag[bytag.body > min_data_per_class].index
     dfTickets = dfTickets[dfTickets[column_to_predict].isin(tags)]
@@ -58,8 +46,6 @@ def train_bayes():
     else:
         count_vect = CountVectorizer()
 
-    # Fitting the training data into a data processing pipeline and eventually into the model itself
-
     text_clf = Pipeline([
         ('vect', count_vect),
         ('tfidf', TfidfTransformer()),
@@ -67,9 +53,6 @@ def train_bayes():
     ])
     text_clf = text_clf.fit(train_data, train_labels)
 
-
- 
-    # Score and evaluate model on test data using model without hyperparameter tuning
     predicted = text_clf.predict(test_data)
     prediction_acc = np.mean(predicted == test_labels)
     return test_labels, predicted
