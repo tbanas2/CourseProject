@@ -14,6 +14,7 @@ import time
 
 import tensorflow as tf
 import numpy as np
+from tensorflow.python.keras.optimizer_v2 import adam
 
 import build_model
 import load_data
@@ -28,7 +29,7 @@ TOP_K = 20000
 
 def train_sequence_model(data,
                          learning_rate=1e-3,
-                         epochs=1000,
+                         epochs=20,
                          batch_size=128,
                          blocks=2,
                          filters=64,
@@ -91,7 +92,7 @@ def train_sequence_model(data,
         loss = 'binary_crossentropy'
     else:
         loss = 'sparse_categorical_crossentropy'
-    optimizer = tf.keras.optimizers.Adam(lr=learning_rate)
+    optimizer = adam.Adam(lr=learning_rate)
     model.compile(optimizer=optimizer, loss=loss, metrics=['acc'])
 
     # Create callback for early stopping on validation loss. If the loss does

@@ -18,6 +18,7 @@ import random
 
 import numpy as np
 import pandas as pd
+import argparse
 
 def load_help_desk_dataset(data_path, seed=123):
     """Loads the amazon reviews sentiment analysis dataset.
@@ -38,7 +39,7 @@ def load_help_desk_dataset(data_path, seed=123):
         Download and uncompress archive from:
                 https://drive.google.com/open?id=0Bz8a_Dbh9QhbZVhsUnRWRDhETzA
     """
-    columns = (6, 0, 1)  # 6 - label, 0 - title, 1 - body.
+    columns = (0, 1, 2)  # 6 - label, 0 - title, 1 - body.
     train_data = _load_and_shuffle_data(
             data_path, 'train.csv', columns, seed, header=None)
 
@@ -46,18 +47,15 @@ def load_help_desk_dataset(data_path, seed=123):
     test_data = pd.read_csv(test_data_path, usecols=columns, header=None)
 
     train_labels = np.array(train_data.iloc[:, 0])
-    #train_labels[train_labels == 5] = 0
     test_labels = np.array(test_data.iloc[:, 0])
-    #test_labels[test_labels == 5] = 0
-    
-
     # Get train and test texts.
-    train_texts = []
-    for index, row in train_data.iterrows():
-        train_texts.append(_get_review_text(row))
     test_texts = []
     for index, row in test_data.iterrows():
         test_texts.append(_get_review_text(row))
+    train_texts = []
+    for index, row in train_data.iterrows():
+          train_texts.append(_get_review_text(row))
+
 
     return ((train_texts, train_labels), (test_texts, test_labels))
 
@@ -192,6 +190,7 @@ def _get_review_text(row):
     # Returns:
         string, text corresponding to the row.
     """
+    
     title = ''
     if type(row[1]) == str:
         title = row[1].replace('\\n', '\n').replace('\\"', '"')
@@ -237,3 +236,13 @@ def _split_training_and_validation_sets(texts, labels, validation_split):
     num_training_samples = int((1 - validation_split) * len(texts))
     return ((texts[:num_training_samples], labels[:num_training_samples]),
             (texts[num_training_samples:], labels[num_training_samples:]))
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--data_dir', type=str, default='.\\',
+                        help='input data directory')
+    FLAGS, unparsed = parser.parse_known_args()
+
+    # Using the IMDb movie reviews dataset to demonstrate training n-gram model
+    data = load_help_desk_dataset(FLAGS.data_dir)
+    print('we are done')

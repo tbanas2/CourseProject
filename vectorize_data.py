@@ -9,11 +9,12 @@ from __future__ import print_function
 import tensorflow as tf
 import numpy as np
 
-from tensorflow.python.keras.preprocessing import sequence
-from tensorflow.python.keras.preprocessing import text
+from keras_preprocessing import sequence
+from keras_preprocessing import text
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import f_classif
+
 
 # Vectorization parameters
 
@@ -60,10 +61,10 @@ def ngram_vectorize(train_texts, train_labels, val_texts):
     vectorizer = TfidfVectorizer(**kwargs)
 
     # Learn vocabulary from training texts and vectorize training texts.
-    x_train = vectorizer.fit_transform(train_texts)
+    x_train = vectorizer.fit_transform(train_texts).todense()
 
     # Vectorize validation texts.
-    x_val = vectorizer.transform(val_texts)
+    x_val = vectorizer.transform(val_texts).todense()   
 
     # Select top 'k' of the vectorized features.
     selector = SelectKBest(f_classif, k=min(TOP_K, x_train.shape[1]))

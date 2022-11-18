@@ -26,7 +26,7 @@ class StemmedCountVectorizer(CountVectorizer):
         return lambda doc: ([stemmer.stem(w) for w in analyzer(doc)])
 
 
-column_to_predict = "ticket_type"
+column_to_predict = "business_service"
 # Supported datasets:
 # ticket_type
 # business_service
@@ -42,7 +42,7 @@ remove_stop_words = True  # removes stop words from processed text
 stop_words_lang = 'english'  # used with 'remove_stop_words' and defines language of stop words collection
 use_stemming = False  # word stemming using nltk
 fit_prior = True  # if use_stemming == True then it should be set to False ?? double check
-min_data_per_class = 1  # used to determine number of samples required for each class.Classes with less than that will be excluded from the dataset. default value is 1
+min_data_per_class = 1000 # used to determine number of samples required for each class.Classes with less than that will be excluded from the dataset. default value is 1
 
 if __name__ == '__main__':
 
@@ -53,7 +53,7 @@ if __name__ == '__main__':
 
     # loading dataset from csv
     dfTickets = pd.read_csv(
-        './datasets/all_tickets.csv',
+        './/all_tickets.csv',
         dtype=str
     )  
 
