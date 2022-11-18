@@ -22,32 +22,21 @@ class StemmedCountVectorizer(CountVectorizer):
         stemmer = SnowballStemmer("english", ignore_stopwords=True)
         return lambda doc: ([stemmer.stem(w) for w in analyzer(doc)])
 
-def get_bayes_result(column_to_predict = "business_service",text_columns = "body", remove_stop_words = True, stop_words_lang = 'english', use_stemming = False, fit_prior = True, min_data_per_class = 1000, file_path= './/all_tickets.csv' ):
-    """Returns results of a Native Bayes classification when given a CSV.
+def get_bayes_result(train_texts, train_labels, val_texts, val_labels, column_to_predict = "business_service",text_columns = "body", remove_stop_words = True, stop_words_lang = 'english', use_stemming = False, fit_prior = True, min_data_per_class = 1000, file_path= './/all_tickets.csv' ):
+    """Returns results of a Native Bayes classification when given lists of test and training data + labels
 
     # Arguments
         column_to_predict = Name of column for classifying
-        file_name = path to file
-        text_columns = Name of column containing model input
+        train_texts
+        train_labels
+        val_texts
+        val_labels
 
     # Returns
         test_labels, predicted; the actual values of the labels in the test data set and what the model predicted
     """
 
-    dfTickets = pd.read_csv(
-        file_path,
-        dtype=str
-    )  
-      
-    bytag = dfTickets.groupby(column_to_predict).aggregate(np.count_nonzero)
-    tags = bytag[bytag.body > min_data_per_class].index
-    dfTickets = dfTickets[dfTickets[column_to_predict].isin(tags)]
-    labelData = dfTickets[column_to_predict]
-    data = dfTickets[text_columns]
-
-    train_data, test_data, train_labels, test_labels = train_test_split(
-        data, labelData, test_size=0.2
-    )  
+    train_data, test_data, train_labels, test_labels = train_texts, val_texts, train_labels, val_labels
 
     if remove_stop_words:
         count_vect = CountVectorizer(stop_words=stop_words_lang)
