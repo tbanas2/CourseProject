@@ -1,5 +1,5 @@
 *.csv
-*.ipynb
+410_f-*.ipynb
 *.pyc
 *.h5
 /unused/*
