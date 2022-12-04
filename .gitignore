@@ -1,0 +1,4 @@
+*.csv
+410_f-*.ipynb
+*.pyc
+/unused/*
