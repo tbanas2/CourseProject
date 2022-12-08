@@ -1,4 +1,4 @@
-# tBanaszak - tbanas2 - CS410 Final Project
+# Luke Banaszak - tbanas2 - CS410 Final Project
 
 ## Repository Contents
 The repository contains code modules, data files and project submission materials. The following files are the ones needed for reviewer grading
