@@ -1,3 +1,4 @@
 410_f-*.ipynb
 *.pyc
 /unused/*
+.ipynb_checkpoints/!FINAL_CODE-checkpoint.ipynb
