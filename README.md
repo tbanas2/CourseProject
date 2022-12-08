@@ -37,5 +37,8 @@ You'll also need Jupyter notebook installed.
 Lastly, be aware that the notebook contains an option to re-train a neural network model or use the pre-trained one. The default behavior, which is recommended, is to just use the pre-trained one.
 
 
+## Projects that this System Implements Select Modules and Functionality from
+Google. 2018. "Google Machine Learning Guides." Github. https://github.com/google/eng-edu/blob/main/ml/guides/text_classification/.
+Żak, Karol. 2018. "Support Tickets Classification." Github. https://github.com/karolzak/support-tickets-classification.
 
 
